@@ -1,5 +1,4 @@
 import { FC, FormEventHandler, useState } from "react";
-import { ITodo } from "../types/ITodo";
 
 interface TodoFormProps {
   addTodo: (value: string) => void;
