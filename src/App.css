@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .App-logo {
@@ -17,6 +20,17 @@ input {
 }
 button {
   cursor: pointer;
+  transition: 0.2s;
+  background-color: gray;
+  color: #fff;
+}
+button:hover {
+  transform: translateY(-1px);
+}
+button:active {
+  transform: translateY(1px);
+}
+input:hover {
 }
 
 .spinner {
@@ -27,7 +41,6 @@ button {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
-
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +48,23 @@ button {
   to {
     transform: rotate(360deg);
   }
+}
+
+.card {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px 0px;
+}
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.todo-item {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px 0px;
+  border-radius: 5px;
+}
+.registration-form,
+.login-form {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
 }

@@ -7,12 +7,17 @@ import { authApi } from "./api/auth";
 
 function App() {
   const navigate = useNavigate();
-  useEffect(() => {
-    authApi.isAuth().then((auth) => !auth && navigate("/auth"));
-  }, [navigate]);
+  // useEffect(() => {
+  //   authApi.onAuthChanges((user) => {
+  //     if (user) {
+  //       navigate("/");
+  //     } else {
+  //       navigate("/auth");
+  //     }
+  //   });
+  // }, [navigate]);
   return (
     <div className="App">
-      <h1>ENV: {process.env.secret?.toString()}</h1>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />

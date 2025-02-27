@@ -4,7 +4,22 @@ import { ITodo } from "../types/ITodo";
 import TodoForm from "../components/TodoForm";
 
 const HomePage = () => {
-  const [todos, setTodos] = useState<ITodo[]>([]);
+  const [todos, setTodos] = useState<ITodo[]>([
+    {
+      id: Math.random(),
+      author: "s.ppp@bk.ru",
+      body: "Lorem ipsum",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: Math.random(),
+      author: "s.ppp@bk.ru",
+      body: "Lorem ipsum",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ]);
   const addTodo = (value: string) => {
     setTodos((todos) => [
       ...todos,
