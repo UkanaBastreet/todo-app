@@ -1,27 +1,23 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import AuthPage from "./pages/Auth";
 import HomePage from "./pages/Home";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { authApi } from "./api/auth";
+import Spinner from "./components/Spinner";
 
 function App() {
-  const navigate = useNavigate();
-  // useEffect(() => {
-  //   authApi.onAuthChanges((user) => {
-  //     if (user) {
-  //       navigate("/");
-  //     } else {
-  //       navigate("/auth");
-  //     }
-  //   });
-  // }, [navigate]);
+  const [isAuth, setIsAuth] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  useEffect(() => {
+    setFetching(true);
+    authApi.onAuthChanges((user) => {
+      setIsAuth(user !== null);
+      setFetching(false);
+    });
+  }, []);
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/auth" element={<AuthPage />} />
-      </Routes>
+      {fetching ? <Spinner /> : isAuth ? <HomePage /> : <AuthPage />}
     </div>
   );
 }

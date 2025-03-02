@@ -18,13 +18,13 @@ const LoginForm: FC<LoginFormProps> = ({ login }) => {
       <h2>Login</h2>
       <input
         type="email"
-        placeholder=""
+        placeholder="email..."
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
-        placeholder=""
+        placeholder="password..."
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />

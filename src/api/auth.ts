@@ -10,11 +10,17 @@ import {
   deleteUser,
 } from "firebase/auth";
 import { app } from "./firebase";
-import { NextOrObserver, User } from "@firebase/auth";
+import { NextOrObserver, updateProfile, User } from "@firebase/auth";
+import { IUser } from "../types/IUser";
 
 interface loginDto {
   email: string;
   password: string;
+}
+interface registrationDto {
+  email: string;
+  password: string;
+  name: string;
 }
 
 class AuthAPI {
@@ -28,16 +34,19 @@ class AuthAPI {
       );
       return credentials;
     } catch (e) {
-      return e;
+      throw e;
     }
   }
-  async registration(dto: loginDto) {
+  async registration(dto: registrationDto) {
     try {
       const credentials = await createUserWithEmailAndPassword(
         this.auth,
         dto.email,
         dto.password
       );
+      await updateProfile(credentials.user, {
+        displayName: dto.name,
+      });
       return credentials;
     } catch (e) {
       return e;
@@ -47,22 +56,14 @@ class AuthAPI {
     try {
       await signOut(this.auth);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
   async onAuthChanges(cb: NextOrObserver<User>) {
-    onAuthStateChanged(this.auth, cb);
+    return onAuthStateChanged(this.auth, cb);
   }
   async isAuth() {
-    let isAuth = false;
-    this.onAuthChanges((user) => {
-      if (user !== null) {
-        isAuth = true;
-      } else {
-        isAuth = false;
-      }
-    });
-    return isAuth;
+    return this.auth.currentUser !== null;
   }
   async resetPassword(email: string) {
     try {
@@ -78,6 +79,20 @@ class AuthAPI {
       }
     } catch (error) {
       return error;
+    }
+  }
+  getUser(): IUser {
+    if (
+      this.auth.currentUser !== null &&
+      this.auth.currentUser.displayName &&
+      this.auth.currentUser.email
+    ) {
+      return {
+        displayName: this.auth.currentUser.displayName,
+        email: this.auth.currentUser.email,
+      };
+    } else {
+      throw Error("Unauthorized");
     }
   }
 }

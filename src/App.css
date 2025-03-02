@@ -24,11 +24,15 @@ button {
   background-color: gray;
   color: #fff;
 }
-button:hover {
-  transform: translateY(-1px);
+button:hover,
+.btn-link:hover {
+  transform: translateY(-2px);
 }
-button:active {
-  transform: translateY(1px);
+button:active,
+.btn-link:active {
+  transform: translateY(2px);
+}
+.btn-link {
 }
 input:hover {
 }
@@ -52,19 +56,39 @@ input:hover {
 
 .card {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px 0px;
+  border-radius: 5px;
+  padding: 20px;
 }
 .todo-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
-.todo-item {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px 0px;
-  border-radius: 5px;
+.todo-item > main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.todo-item > header {
+  border-bottom: 1px solid lightgray;
+}
+.todo-item > header > button {
+  height: 20px;
+  width: 20px;
+}
+.todo-item > header,
+.todo-item > footer {
+  display: flex;
+  justify-content: space-between;
 }
 .registration-form,
 .login-form {
   width: 50%;
   display: flex;
   flex-direction: column;
+}
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
