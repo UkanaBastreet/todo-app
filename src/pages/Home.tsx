@@ -28,8 +28,6 @@ const HomePage = () => {
     setUser(newUser);
 
     if (todos.length === 0 && !fetching) {
-      authApi.isAuth().then(console.log);
-
       setFetching(true);
       todoApi.getTodos().then((todos) => {
         setTodos(todos);

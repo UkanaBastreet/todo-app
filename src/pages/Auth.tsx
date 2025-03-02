@@ -10,16 +10,10 @@ const AuthPage = () => {
     null
   );
   const login = (email: string, password: string) => {
-    authApi
-      .login({ email, password })
-      .then(console.log)
-      .catch((e) => setError(e));
+    authApi.login({ email, password }).catch((e) => setError(e));
   };
   const registration = (email: string, password: string, name: string) => {
-    authApi
-      .registration({ email, password, name })
-      .then(console.log)
-      .catch((e) => setError(e));
+    authApi.registration({ email, password, name }).catch((e) => setError(e));
   };
   return (
     <div className="auth-page">
