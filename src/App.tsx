@@ -1,9 +1,9 @@
-import "./App.css";
 import AuthPage from "./pages/Auth";
 import HomePage from "./pages/Home";
 import { useEffect, useState } from "react";
 import { authApi } from "./api/auth";
-import Spinner from "./components/Spinner";
+import Spinner from "./components/UI/Spinner";
+import styled from "styled-components";
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -16,10 +16,20 @@ function App() {
     });
   }, []);
   return (
-    <div className="App">
+    <StyledApp className="App">
       {fetching ? <Spinner /> : isAuth ? <HomePage /> : <AuthPage />}
-    </div>
+    </StyledApp>
   );
 }
+
+const StyledApp = styled.div`
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+`;
 
 export default App;

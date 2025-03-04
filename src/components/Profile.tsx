@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Card from "./Card";
+import Card from "./UI/Card";
 import { IUser } from "../types/IUser";
 import { authApi } from "../api/auth";
 

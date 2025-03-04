@@ -1,4 +1,6 @@
 import { FC, FormEventHandler, useState } from "react";
+import Button from "./UI/Button";
+import Input from "./UI/Input";
 
 interface LoginFormProps {
   login: (email: string, password: string) => void;
@@ -16,19 +18,19 @@ const LoginForm: FC<LoginFormProps> = ({ login }) => {
   return (
     <form className="login-form" onSubmit={handleSubmit}>
       <h2>Login</h2>
-      <input
+      <Input
         type="email"
         placeholder="email..."
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input
+      <Input
         type="password"
         placeholder="password..."
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button>Login</button>
+      <Button>Login</Button>
     </form>
   );
 };

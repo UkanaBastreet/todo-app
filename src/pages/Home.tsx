@@ -1,14 +1,43 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import TodoList from "../components/TodoList";
 import { ITodo } from "../types/ITodo";
 import TodoForm from "../components/TodoForm";
 import { todoApi } from "../api/todo";
 import { authApi } from "../api/auth";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/UI/Spinner";
 import Profile from "../components/Profile";
 import { IUser } from "../types/IUser";
+import styled from "styled-components";
 
-const HomePage = () => {
+interface HomePageProps {
+  user: IUser;
+  todos: ITodo[];
+  addTodo: (id: string) => void;
+  removeTodo: (id: string) => void;
+  fetching: boolean;
+}
+
+const HomePage: FC<HomePageProps> = ({
+  addTodo,
+  fetching,
+  removeTodo,
+  todos,
+  user,
+}) => {
+  return (
+    <HomePageStyled className="home-page">
+      <Profile user={user} />
+      <TodoForm addTodo={addTodo} />
+      {fetching ? (
+        <Spinner />
+      ) : (
+        <TodoList todos={todos} removeTodo={removeTodo} />
+      )}
+    </HomePageStyled>
+  );
+};
+
+const HomePageContainer = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [user, setUser] = useState<IUser>(authApi.getUser());
 
@@ -34,18 +63,22 @@ const HomePage = () => {
         setFetching(false);
       });
     }
-  }, []);
+  }, [fetching, todos.length]);
   return (
-    <div className="home-page">
-      <Profile user={user} />
-      <TodoForm addTodo={addTodo} />
-      {fetching ? (
-        <Spinner />
-      ) : (
-        <TodoList todos={todos} removeTodo={removeTodo} />
-      )}
-    </div>
+    <HomePage
+      user={user}
+      addTodo={addTodo}
+      todos={todos}
+      removeTodo={removeTodo}
+      fetching={fetching}
+    />
   );
 };
 
-export default HomePage;
+const HomePageStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export default HomePageContainer;

@@ -1,4 +1,5 @@
 import { FC, FormEventHandler, useState } from "react";
+import Input from "./UI/Input";
 
 interface RegistrationFormProps {
   registration: (email: string, password: string, name: string) => void;
@@ -17,19 +18,19 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ registration }) => {
   return (
     <form className="registration-form" onSubmit={handleSubmit}>
       <h2>Registration</h2>
-      <input
+      <Input
         type="text"
         placeholder="display name..."
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <input
+      <Input
         type="email"
         placeholder="email..."
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input
+      <Input
         type="password"
         placeholder="password..."
         value={password}

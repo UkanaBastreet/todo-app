@@ -1,5 +1,7 @@
 import { FC, FormEventHandler, useState } from "react";
-import Card from "./Card";
+import Card from "./UI/Card";
+import Input from "./UI/Input";
+import Button from "./UI/Button";
 
 interface TodoFormProps {
   addTodo: (value: string) => void;
@@ -17,14 +19,14 @@ const TodoForm: FC<TodoFormProps> = ({ addTodo }) => {
   return (
     <Card>
       <form className="todo-form" onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Todo ..."
           onSubmit={handleSubmit}
         />
-        <button type="submit">Todo</button>
+        <Button type="submit">Todo</Button>
       </form>
     </Card>
   );
