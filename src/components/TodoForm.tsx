@@ -2,6 +2,7 @@ import { FC, FormEventHandler, useState } from "react";
 import Card from "./UI/Card";
 import Input from "./UI/Input";
 import Button from "./UI/Button";
+import styled from "styled-components";
 
 interface TodoFormProps {
   addTodo: (value: string) => void;
@@ -18,7 +19,7 @@ const TodoForm: FC<TodoFormProps> = ({ addTodo }) => {
   };
   return (
     <Card>
-      <form className="todo-form" onSubmit={handleSubmit}>
+      <StyledTodoForm onSubmit={handleSubmit}>
         <Input
           type="text"
           value={value}
@@ -27,9 +28,18 @@ const TodoForm: FC<TodoFormProps> = ({ addTodo }) => {
           onSubmit={handleSubmit}
         />
         <Button type="submit">Todo</Button>
-      </form>
+      </StyledTodoForm>
     </Card>
   );
 };
+
+const StyledTodoForm = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap:10px;
+  &>input{
+  width:100%;}
+`;
 
 export default TodoForm;
