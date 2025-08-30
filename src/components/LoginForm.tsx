@@ -1,6 +1,7 @@
 import { FC, FormEventHandler, useState } from "react";
 import Button from "./UI/Button";
 import Input from "./UI/Input";
+import styled from "styled-components";
 
 interface LoginFormProps {
   login: (email: string, password: string) => void;
@@ -9,14 +10,16 @@ interface LoginFormProps {
 const LoginForm: FC<LoginFormProps> = ({ login }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
     if (email.trim() !== "" && password.trim() !== "") {
       login(email, password);
     }
   };
+
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
+    <StyledLoginForm className="login-form" onSubmit={handleSubmit}>
       <h2>Login</h2>
       <Input
         type="email"
@@ -30,8 +33,19 @@ const LoginForm: FC<LoginFormProps> = ({ login }) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <div>
+        <input type="checkbox" name="rememberMe" id="" />
+        <label htmlFor="rememberMe">Remember me</label>
+      </div>
       <Button>Login</Button>
-    </form>
+    </StyledLoginForm>
   );
 };
+
+const StyledLoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+`;
 export default LoginForm;
