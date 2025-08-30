@@ -1,5 +1,7 @@
 import { FC, FormEventHandler, useState } from "react";
 import Input from "./UI/Input";
+import Button from "./UI/Button";
+import styled from "styled-components";
 
 interface RegistrationFormProps {
   registration: (email: string, password: string, name: string) => void;
@@ -16,7 +18,7 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ registration }) => {
     }
   };
   return (
-    <form className="registration-form" onSubmit={handleSubmit}>
+    <StyledRegistrationForm className="registration-form" onSubmit={handleSubmit}>
       <h2>Registration</h2>
       <Input
         type="text"
@@ -36,8 +38,16 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ registration }) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button>Registration</button>
-    </form>
+      <Button>Registration</Button>
+    </StyledRegistrationForm>
   );
 };
+
+
+const StyledRegistrationForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+`;
 export default RegistrationForm;
