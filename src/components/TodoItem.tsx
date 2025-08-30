@@ -2,6 +2,7 @@ import { FC } from "react";
 import { ITodo } from "../types/ITodo";
 import Card from "./UI/Card";
 import styled from "styled-components";
+import Button from "./UI/Button";
 
 interface TodoItemProps {
   todo: ITodo;
@@ -14,19 +15,13 @@ const TodoItem: FC<TodoItemProps> = ({ todo, removeTodo }) => {
       <TodoItemStyled>
         <header>
           <b>{todo.author}</b>
-          <span
-            className="btn-link"
-            style={{ cursor: "pointer" }}
-            onClick={() => removeTodo(todo.id)}
-          >
-            ✖
-          </span>
+          <Button  design="text" color="red" onClick={() => removeTodo(todo.id)}>✖</Button>
         </header>
         <main>{todo.body}</main>
         <footer>
           <span></span>
           <span style={{ color: "gray" }}>
-            {todo.updatedAt.toLocaleTimeString()}
+            {todo.updatedAt.toLocaleString()}
           </span>
         </footer>
       </TodoItemStyled>

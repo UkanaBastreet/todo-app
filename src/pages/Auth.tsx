@@ -4,12 +4,13 @@ import RegistrationForm from "../components/RegistrationForm";
 import { authApi } from "../api/auth";
 import Card from "../components/UI/Card";
 import styled from "styled-components";
+import Button from "../components/UI/Button";
 
 interface AuthPageProps {
   error: { code: string; message: string } | null;
   login: (email: string, password: string) => void;
   registration: (email: string, password: string, name: string) => void;
-  isLogining: boolean;
+  isLoginMode: boolean;
   changeAuthMethod: () => void;
 }
 
@@ -17,7 +18,7 @@ const AuthPage: FC<AuthPageProps> = ({
   error,
   login,
   registration,
-  isLogining,
+  isLoginMode,
   changeAuthMethod,
 }) => {
   return (
@@ -29,10 +30,10 @@ const AuthPage: FC<AuthPageProps> = ({
         </div>
       )}
       <Card>
-        <a href="/auth#" onClick={changeAuthMethod}>
-          {isLogining ? "Registration" : "Login"}
-        </a>
-        {isLogining ? (
+        <Button design="text" color="blue" onClick={changeAuthMethod}>
+          {isLoginMode ? "Registration" : "Login"}
+        </Button>
+        {isLoginMode ? (
           <LoginForm login={login} />
         ) : (
           <RegistrationForm registration={registration} />
@@ -43,7 +44,7 @@ const AuthPage: FC<AuthPageProps> = ({
 };
 
 const AuthPageContainer = () => {
-  const [isLogining, setIsLogining] = useState(true);
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const [error, setError] = useState<{ code: string; message: string } | null>(
     null
   );
@@ -54,12 +55,12 @@ const AuthPageContainer = () => {
     authApi.registration({ email, password, name }).catch((e) => setError(e));
   };
   const changeAuthMethod = () => {
-    setIsLogining((l) => !l);
+    setIsLoginMode((l) => !l);
   };
   return (
     <AuthPage
       error={error}
-      isLogining={isLogining}
+      isLoginMode={isLoginMode}
       login={login}
       registration={registration}
       changeAuthMethod={changeAuthMethod}
