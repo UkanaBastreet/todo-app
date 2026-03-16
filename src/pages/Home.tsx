@@ -56,14 +56,14 @@ const HomePageContainer = () => {
     const newUser = authApi.getUser();
     setUser(newUser);
 
-    if (todos.length === 0 && !fetching) {
-      setFetching(true);
-      todoApi.getTodos().then((todos) => {
-        setTodos(todos);
-        setFetching(false);
-      });
-    }
-  }, [fetching, todos.length]);
+    // Load todos once on mount. Avoid re-fetching when the list becomes empty (e.g. after deleting the last todo),
+    // which would otherwise cause an infinite fetch loop.
+    setFetching(true);
+    todoApi.getTodos().then((todos) => {
+      setTodos(todos);
+      setFetching(false);
+    });
+  }, []);
   return (
     <HomePage
       user={user}

@@ -15,14 +15,23 @@ const TodoItem: FC<TodoItemProps> = ({ todo, removeTodo }) => {
       <TodoItemStyled>
         <header>
           <b>{todo.author}</b>
-          <Button  design="text" color="red" onClick={() => removeTodo(todo.id)}>✖</Button>
+          <Button design="text" color="red" onClick={() => removeTodo(todo.id)}>
+            ✖
+          </Button>
         </header>
         <main>{todo.body}</main>
         <footer>
-          <span></span>
-          <span style={{ color: "gray" }}>
-            {todo.updatedAt.toLocaleString()}
-          </span>
+          {/* <span style={{ color: "gray" }}> */}
+          {todo.updatedAt
+            .toLocaleString()
+            .split(",")
+            .map((item) => (
+              <span style={{ color: "gray" }} key={item}>
+                {item}
+              </span>
+            ))}
+          {/* </span> */}
+          {/* <span></span> */}
         </footer>
       </TodoItemStyled>
     </Card>
@@ -34,9 +43,9 @@ const TodoItemStyled = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0;
   }
   > header {
-    border-bottom: 1px solid lightgray;
     display: flex;
     justify-content: space-between;
   }
