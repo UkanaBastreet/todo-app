@@ -23,6 +23,8 @@ function App() {
 }
 
 const StyledApp = styled.div`
+  color: var(--text-color);
+  background-color: var(--bg-color);
   height: 100vh;
   width: 100%;
   text-align: center;
@@ -30,9 +32,9 @@ const StyledApp = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 `;
 
 export default App;
