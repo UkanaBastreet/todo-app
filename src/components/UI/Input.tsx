@@ -9,6 +9,8 @@ const InputStyled = styled.input`
   border-radius: 5px;
   outline: none;
   border: 1px solid gray;
+  color: var(--text-color);
+  background-color: transparent;
 `;
 
 const Input: FC<InputProps> = (props) => {

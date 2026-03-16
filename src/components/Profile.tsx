@@ -13,7 +13,9 @@ const Profile: FC<ProfileProps> = ({ user }) => {
     <Card className="profile">
       <header>
         <h1>{user.displayName}</h1>
-        <Button onClick={() => authApi.logout()}>exit</Button>
+        <Button color="red" design="outline" onClick={() => authApi.logout()}>
+          exit
+        </Button>
       </header>
       <b>{user.email}</b>
     </Card>
