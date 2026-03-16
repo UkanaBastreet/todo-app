@@ -15,7 +15,10 @@ import {
 import { ITodo } from "../types/ITodo";
 
 class TodoApi {
-  constructor(private auth: Auth, private db: Firestore) {}
+  constructor(
+    private auth: Auth,
+    private db: Firestore,
+  ) {}
   async addTodo(text: string, isPublic: boolean = false): Promise<ITodo> {
     const user = this.auth.currentUser;
     const todos = await this.getTodos();
@@ -36,13 +39,28 @@ class TodoApi {
     const docRef = await addDoc(collection(this.db, "todos"), todo);
     return { id: docRef.id, ...todo };
   }
+  async getAllTodos() {
+    const q = query(collection(this.db, "todos"));
+    // i need only 100 last todos
+    const querySnapshot = await getDocs(q);
+
+    const todos: ITodo[] = querySnapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt.toDate(),
+        updatedAt: doc.data().updatedAt.toDate(),
+      } as ITodo;
+    });
+    return todos;
+  }
   async getTodos(): Promise<ITodo[]> {
     const user = this.auth.currentUser;
     if (!user) return [];
 
     const q = query(
       collection(this.db, "todos"),
-      where("userId", "==", user.uid)
+      where("userId", "==", user.uid),
     );
     const querySnapshot = await getDocs(q);
 
@@ -60,11 +78,19 @@ class TodoApi {
   async getPublicTodos() {
     const q = query(
       collection(this.db, "todos"),
-      where("isPublic", "==", true)
+      where("isPublic", "==", true),
     );
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    return querySnapshot.docs.map(
+      (doc) =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt.toDate(),
+          updatedAt: doc.data().updatedAt.toDate(),
+        }) as ITodo,
+    );
   }
   async updateTodo(todoId: string, updates: Partial<ITodo>) {
     const user = this.auth.currentUser;

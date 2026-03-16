@@ -83,7 +83,7 @@ class AuthAPI {
   }
   getUser(): IUser {
     if (
-      this.auth.currentUser !== null &&
+      this.auth.currentUser &&
       this.auth.currentUser.displayName &&
       this.auth.currentUser.email
     ) {
@@ -92,7 +92,7 @@ class AuthAPI {
         email: this.auth.currentUser.email,
       };
     } else {
-      throw Error("Unauthorized");
+      throw Error("[NOTFOUND] currentUser="+this.auth.currentUser);
     }
   }
 }
