@@ -36,10 +36,22 @@ const TodoForm: FC<TodoFormProps> = ({ addTodo }) => {
 const StyledTodoForm = styled.form`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap:10px;
-  &>input{
-  width:100%;}
+  gap: 14px;
+  width: 100%;
+  padding: 18px;
+  border-radius: 24px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+
+  & > input {
+    width: 100%;
+    min-height: 52px;
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  button {
+    min-width: 128px;
+  }
 `;
 
 export default TodoForm;

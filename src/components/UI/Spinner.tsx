@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const SpinnerKeyframes = keyframes`
   from {
@@ -8,17 +8,13 @@ const SpinnerKeyframes = keyframes`
     transform: rotate(360deg);
   }
 `;
-const SpinnerAnimation = () => css`
-  ${SpinnerKeyframes} .7s linear infinite;
-`;
 const SpinnerStyled = styled.div`
-  width: 20px;
-  height: 20px;
-  border: 5px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #000;
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(255, 255, 255, 0.18);
+  border-left-color: var(--accent);
   border-radius: 50%;
-  animation: ${SpinnerAnimation};
-}
+  animation: ${SpinnerKeyframes} 0.75s linear infinite;
 `;
 
 const Spinner = () => {

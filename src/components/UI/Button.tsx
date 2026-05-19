@@ -36,19 +36,22 @@ const colorMap = {
 };
 const sizeStyles = {
   small: {
-    padding: "2px 8px",
-    fontSize: "12px",
+    padding: "0 14px",
+    fontSize: "13px",
     lineHeight: "20px",
+    minHeight: "36px",
   },
   default: {
-    padding: "4px 16px",
-    fontSize: "14px",
-    lineHeight: "22px",
+    padding: "0 20px",
+    fontSize: "15px",
+    lineHeight: "24px",
+    minHeight: "52px",
   },
   large: {
-    padding: "10px 20px",
+    padding: "0 26px",
     fontSize: "16px",
-    lineHeight: "24px",
+    lineHeight: "26px",
+    minHeight: "60px",
   },
 };
 
@@ -107,30 +110,43 @@ interface StyledButtonProps {
   size: SizeType;
 }
 const StyledButton = styled.button<StyledButtonProps>`
-  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   border-width: 1px;
   border-style: solid;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  white-space: nowrap;
 
-  /* Size Styles */
   ${({ size }) => `
     padding: ${sizeStyles[size].padding};
     font-size: ${sizeStyles[size].fontSize};
     line-height: ${sizeStyles[size].lineHeight};
+    min-height: ${sizeStyles[size].minHeight};
   `}
 
-  /* Design & Color Styles */
   ${({ design, color }) => getDesignStyles(design, color)}
 
+  &:hover {
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.55;
     cursor: not-allowed;
+    box-shadow: none;
 
     ${({ design }) =>
       design === "outline"
-        ? `border-color: #D9D9D9; color: #BFBFBF;`
-        : `background: #D9D9D9; color: #FFFFFF;`}
+        ? `border-color: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.55);`
+        : `background: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.55);`}
   }
 `;
 

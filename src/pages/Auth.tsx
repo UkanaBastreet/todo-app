@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { useNotification } from "../components/UI/Toast";
 import LoginForm from "../components/LoginForm";
 import RegistrationForm from "../components/RegistrationForm";
 import { authApi } from "../api/auth";
@@ -48,11 +49,47 @@ const AuthPageContainer = () => {
   const [error, setError] = useState<{ code: string; message: string } | null>(
     null
   );
+  const { notify } = useNotification();
+
   const login = (email: string, password: string) => {
-    authApi.login({ email, password }).catch((e) => setError(e));
+    authApi
+      .login({ email, password })
+      .then(() => {
+        notify({
+          type: "success",
+          title: "Вход выполнен",
+          message: "Добро пожаловать!",
+        });
+      })
+      .catch((e) => {
+        const message = e instanceof Error ? e.message : String(e);
+        setError({ code: "LOGIN_FAILED", message });
+        notify({
+          type: "error",
+          title: "Ошибка входа",
+          message,
+        });
+      });
   };
   const registration = (email: string, password: string, name: string) => {
-    authApi.registration({ email, password, name }).catch((e) => setError(e));
+    authApi
+      .registration({ email, password, name })
+      .then(() => {
+        notify({
+          type: "success",
+          title: "Регистрация успешна",
+          message: "Пользователь создан.",
+        });
+      })
+      .catch((e) => {
+        const message = e instanceof Error ? e.message : String(e);
+        setError({ code: "REGISTRATION_FAILED", message });
+        notify({
+          type: "error",
+          title: "Ошибка регистрации",
+          message,
+        });
+      });
   };
   const changeAuthMethod = () => {
     setIsLoginMode((l) => !l);
@@ -69,9 +106,19 @@ const AuthPageContainer = () => {
 };
 
 const AuthPageStyled = styled.div`
-  width: 50%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 140px);
+  padding: 20px 20px 0;
+
+  > section,
+  > div,
+  > div > div {
+    width: min(480px, 100%);
+  }
 `;
 
 export default AuthPageContainer;

@@ -2,10 +2,12 @@ import { FC } from "react";
 import styled from "styled-components";
 
 const CardContainer = styled.div`
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
-  border-radius: 10px;
-  padding: 16px 20px;
-  
+  border-radius: 22px;
+  padding: 20px 24px;
 `;
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {

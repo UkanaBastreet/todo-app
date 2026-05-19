@@ -1,72 +1,89 @@
 import { FC, useEffect, useState } from "react";
+import { useNotification } from "../components/UI/Toast";
 import TodoList from "../components/TodoList";
 import { ITodo } from "../types/ITodo";
 import TodoForm from "../components/TodoForm";
 import { todoApi } from "../api/todo";
-import { authApi } from "../api/auth";
 import Spinner from "../components/UI/Spinner";
-import Profile from "../components/Profile";
-import { IUser } from "../types/IUser";
 import styled from "styled-components";
 
-interface HomePageProps {
-  user: IUser;
+interface TasksPageProps {
   todos: ITodo[];
-  addTodo: (id: string) => void;
+  addTodo: (text: string) => void;
   removeTodo: (id: string) => void;
   fetching: boolean;
 }
 
-const HomePage: FC<HomePageProps> = ({
-  addTodo,
-  fetching,
-  removeTodo,
-  todos,
-  user,
-}) => {
+const TasksPage: FC<TasksPageProps> = ({ addTodo, fetching, removeTodo, todos }) => {
   return (
-    <HomePageStyled className="home-page">
-      <Profile user={user} />
+    <TasksPageStyled className="tasks-page">
       <TodoForm addTodo={addTodo} />
       {fetching ? (
         <Spinner />
       ) : (
         <TodoList todos={todos} removeTodo={removeTodo} />
       )}
-    </HomePageStyled>
+    </TasksPageStyled>
   );
 };
 
-const HomePageContainer = () => {
+const TasksPageContainer = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
-  const [user, setUser] = useState<IUser>(authApi.getUser());
+  const [fetching, setFetching] = useState(true);
+  const { notify } = useNotification();
 
-  const [fetching, setFetching] = useState(false);
   const addTodo = (text: string) => {
-    todoApi.addTodo(text).then((todo) => {
-      setTodos([...todos, { ...todo }]);
-    });
+    todoApi
+      .addTodo(text)
+      .then((todo) => {
+        setTodos([...todos, { ...todo }]);
+        notify({
+          type: "success",
+          title: "Задача создана",
+          message: "Новая задача добавлена в список.",
+        });
+      })
+      .catch((e) => {
+        const message = e instanceof Error ? e.message : String(e);
+        notify({
+          type: "error",
+          title: "Ошибка создания",
+          message,
+        });
+      });
   };
-  const removeTodo = (id: string) => {
-    todoApi.deleteTodo(id).then(() => {
-      setTodos(todos.filter((todo) => todo.id !== id));
-    });
-  };
-  useEffect(() => {
-    const newUser = authApi.getUser();
-    setUser(newUser);
 
-    // Load todos once on mount. Avoid re-fetching when the list becomes empty (e.g. after deleting the last todo),
-    // which would otherwise cause an infinite fetch loop.
+  const removeTodo = (id: string) => {
+    todoApi
+      .deleteTodo(id)
+      .then(() => {
+        setTodos(todos.filter((todo) => todo.id !== id));
+        notify({
+          type: "success",
+          title: "Задача удалена",
+          message: "Задача успешно удалена.",
+        });
+      })
+      .catch((e) => {
+        const message = e instanceof Error ? e.message : String(e);
+        notify({
+          type: "error",
+          title: "Ошибка удаления",
+          message,
+        });
+      });
+  };
+
+  useEffect(() => {
     setFetching(true);
     todoApi.getTodos().then((todos) => {
       setTodos(todos);
       setFetching(false);
     });
   }, []);
+
   return (
-    <HomePage
-      user={user}
+    <TasksPage
       addTodo={addTodo}
       todos={todos}
       removeTodo={removeTodo}
@@ -75,10 +92,13 @@ const HomePageContainer = () => {
   );
 };
 
-const HomePageStyled = styled.div`
+const TasksPageStyled = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
 `;
 
-export default HomePageContainer;
+export default TasksPageContainer;

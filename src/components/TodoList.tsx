@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 interface TodoListProps {
   todos: ITodo[];
-  removeTodo: (id: string) => void;
+  removeTodo?: (id: string) => void;
 }
 
 const TodoList: FC<TodoListProps> = ({ todos, removeTodo }) => {

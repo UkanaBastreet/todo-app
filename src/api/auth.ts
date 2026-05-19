@@ -10,7 +10,20 @@ import {
   deleteUser,
 } from "firebase/auth";
 import { app } from "./firebase";
-import { NextOrObserver, updateProfile, User } from "@firebase/auth";
+import {
+  NextOrObserver,
+  updateProfile,
+  User,
+} from "@firebase/auth";
+import {
+  Firestore,
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+} from "firebase/firestore";
 import { IUser } from "../types/IUser";
 
 interface loginDto {
@@ -24,7 +37,11 @@ interface registrationDto {
 }
 
 class AuthAPI {
-  constructor(private app: FirebaseApp, private auth: Auth) {}
+  constructor(
+    private app: FirebaseApp,
+    private auth: Auth,
+    private db: Firestore
+  ) {}
   async login(dto: loginDto) {
     try {
       const credentials = await signInWithEmailAndPassword(
@@ -47,9 +64,14 @@ class AuthAPI {
       await updateProfile(credentials.user, {
         displayName: dto.name,
       });
+      await setDoc(doc(this.db, "users", credentials.user.uid), {
+        displayName: dto.name,
+        email: dto.email,
+        createdAt: new Date(),
+      });
       return credentials;
     } catch (e) {
-      return e;
+      throw e;
     }
   }
   async logout() {
@@ -81,19 +103,31 @@ class AuthAPI {
       return error;
     }
   }
-  getUser(): IUser {
-    if (
-      this.auth.currentUser &&
-      this.auth.currentUser.displayName &&
-      this.auth.currentUser.email
-    ) {
+
+  async getUsers() {
+    const q = query(collection(this.db, "users"));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((docSnapshot) => {
+      const data = docSnapshot.data();
       return {
-        displayName: this.auth.currentUser.displayName,
-        email: this.auth.currentUser.email,
-      };
-    } else {
-      throw Error("[NOTFOUND] currentUser="+this.auth.currentUser);
+        id: docSnapshot.id,
+        displayName: data.displayName || "User",
+        email: data.email || "",
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : data.createdAt,
+      } as { id: string; displayName: string; email: string; createdAt: Date };
+    });
+  }
+  getUser(): IUser | null {
+    const user = this.auth.currentUser;
+    if (!user) {
+      return null;
     }
+
+    return {
+      displayName:
+        user.displayName || user.email?.split("@")[0] || "User",
+      email: user.email || "",
+    };
   }
 }
-export const authApi = new AuthAPI(app, getAuth(app));
+export const authApi = new AuthAPI(app, getAuth(app), getFirestore());

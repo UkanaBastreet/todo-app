@@ -6,7 +6,7 @@ import Button from "./UI/Button";
 
 interface TodoItemProps {
   todo: ITodo;
-  removeTodo: (id: string) => void;
+  removeTodo?: (id: string) => void;
 }
 
 const TodoItem: FC<TodoItemProps> = ({ todo, removeTodo }) => {
@@ -15,9 +15,11 @@ const TodoItem: FC<TodoItemProps> = ({ todo, removeTodo }) => {
       <TodoItemStyled>
         <header>
           <b>{todo.author}</b>
-          <Button design="text" color="red" onClick={() => removeTodo(todo.id)}>
-            ✖
-          </Button>
+          {removeTodo && (
+            <Button design="text" color="red" onClick={() => removeTodo(todo.id)}>
+              ✖
+            </Button>
+          )}
         </header>
         <main>{todo.body}</main>
         <footer>
@@ -39,19 +41,35 @@ const TodoItem: FC<TodoItemProps> = ({ todo, removeTodo }) => {
 };
 
 const TodoItemStyled = styled.div`
-  & > main {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
   > header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    b {
+      font-size: 1rem;
+    }
   }
+
+  > main {
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: left;
+  }
+
   > footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
   }
 `;
 export default TodoItem;
