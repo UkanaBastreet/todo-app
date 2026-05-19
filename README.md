@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# TodoWall — React + TypeScript + Firebase
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Небольшое приложение для заметок/задач с авторизацией через Firebase и публичной "стеной" задач.
 
-## Available Scripts
+Ключевые особенности
+- Аутентификация (Firebase Auth)
+- Хранение задач в Firestore
+- Публичная стена всех задач
+- Уведомления (тосты) с фильтром показа (всё / только ошибки / ошибки+инфо)
+- Темная/светлая тема с переключателем
 
-In the project directory, you can run:
+Страницы и маршруты
+- `/auth` — страница входа/регистрации
+- `/tasks` — ваши задачи (создание, список)
+- `/profile` — профиль и личные данные
+- `/wall` — публичная стена всех задач
+- `/users` — список пользователей (требуется разрешение)
+- `/settings` — настройки (включая фильтр уведомлений)
 
-### `yarn start`
+Быстрый старт
+1. Установить зависимости:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+npm install
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+2. Запустить dev-сервер:
 
-### `yarn test`
+```bash
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Сборка production:
 
-### `yarn build`
+```bash
+npm run build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Конфигурация (Firebase)
+- Для работы нужно добавить Firebase-конфигурацию. Обычно это делается через `src/api/firebase.ts` или переменные окружения. Проверьте файл `src/api/firebase.ts` и инструкции в нём.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Тема и уведомления
+- В приложении есть переключатель темы в шапке — состояние сохраняется в `localStorage` и применяется через `html[data-theme]`.
+- Фильтр уведомлений настраивается в `Настройки` (страница `src/pages/SettingsPage.tsx`) и сохраняется в `localStorage`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Полезные файлы
+- `src/App.tsx` — маршруты, шапка, провайдер уведомлений
+- `src/pages/Home.tsx` (now `Tasks`) — список задач
+- `src/pages/ProfilePage.tsx` — профиль пользователя
+- `src/pages/PublicWall.tsx` — публичная стена
+- `src/components/UI/Toast.tsx` — провайдер уведомлений
+- `src/index.css` — темы и переменные CSS
 
-### `yarn eject`
+Разработка и вклад
+- Открывайте PR для изменений. Следуйте текущему стилю кода (TypeScript + styled-components).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Если хотите, могу: добавить README на английском, добавить инструкцию по локальной настройке Firebase, или создать CLI/скрипт для деплоя. Напишите, что предпочтительнее.
